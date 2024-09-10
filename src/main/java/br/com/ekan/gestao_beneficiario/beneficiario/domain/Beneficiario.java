@@ -1,0 +1,42 @@
+package br.com.ekan.gestao_beneficiario.beneficiario.domain;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import br.com.ekan.gestao_beneficiario.documento.domain.Documeto;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class Beneficiario {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(columnDefinition = "uuid",name = "id", nullable = false, unique = true, updatable = false)
+	private UUID idBeneficiario;
+	@NotBlank(message = "O campo não deve estar em branco")
+	private String nomeCompleto;
+	@NotBlank(message = "O campo não deve estar em branco")
+	private String telefone;
+	@NotNull
+	private LocalDate dataNascimento;
+	@NotEmpty
+	@OneToMany
+	private List<Documeto> documentos;
+	
+	private LocalDate dataInclusao;
+	private LocalDate dataAtualizacao;
+}
