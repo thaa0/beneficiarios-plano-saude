@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: gestao-beneficiario
+    
+server:
+  servlet:
+    context-path: /gestao-beneficiario/api
+
+springdoc:
+  swagger-ui:
+    path: /swagger
