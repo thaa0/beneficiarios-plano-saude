@@ -1,7 +1,10 @@
 package br.com.ekan.gestao_beneficiario.beneficiario.application.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import br.com.ekan.gestao_beneficiario.beneficiario.application.api.BeneficiarioListResponse;
 import br.com.ekan.gestao_beneficiario.beneficiario.application.api.BeneficiarioRequest;
 import br.com.ekan.gestao_beneficiario.beneficiario.application.api.BeneficiarioResponse;
 import br.com.ekan.gestao_beneficiario.beneficiario.application.repository.BeneficiarioRepository;
@@ -24,5 +27,12 @@ public class BeneficiarioApplicationService implements BeneficiarioService {
 		return BeneficiarioResponse.builder()
 				.idBeneficiario(beneficiario.getIdBeneficiario())
 				.build();
+	}
+
+	@Override
+	public List<BeneficiarioListResponse> buscaBeneficiarios() {
+		log.info("[start] BeneficiarioApplicationService - cadastraBeneficiario");
+		log.info("[finish] BeneficiarioApplicationService - cadastraBeneficiario");
+		return null;
 	}
 }

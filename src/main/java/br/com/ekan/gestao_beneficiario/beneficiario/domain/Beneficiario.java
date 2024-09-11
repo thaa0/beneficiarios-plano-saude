@@ -40,7 +40,7 @@ public class Beneficiario {
 	private List<Documento> documentos;
 	
 	private LocalDate dataInclusao;
-	private LocalDate dataAtualizacao;
+	private LocalDate ultimaAtualizacao;
 	
 	public Beneficiario(BeneficiarioRequest beneficiarioRequest) {
 		this.nomeCompleto = beneficiarioRequest.getNomeCompleto();
