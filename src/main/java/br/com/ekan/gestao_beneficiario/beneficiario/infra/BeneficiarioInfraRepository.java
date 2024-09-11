@@ -1,5 +1,7 @@
 package br.com.ekan.gestao_beneficiario.beneficiario.infra;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import br.com.ekan.gestao_beneficiario.beneficiario.application.repository.BeneficiarioRepository;
@@ -20,5 +22,13 @@ public class BeneficiarioInfraRepository implements BeneficiarioRepository {
 		beneficiarioSpringDataJPARepository.save(beneficiario);
 		log.info("[finish] BeneficiarioInfraRepository - salva");
 		return beneficiario;
+	}
+
+	@Override
+	public List<Beneficiario> buscaTodos() {
+		log.info("[start] BeneficiarioInfraRepository - salva");
+		List<Beneficiario> beneficiarios = beneficiarioSpringDataJPARepository.findAll();
+		log.info("[finish] BeneficiarioInfraRepository - salva");
+		return beneficiarios;
 	}
 }
