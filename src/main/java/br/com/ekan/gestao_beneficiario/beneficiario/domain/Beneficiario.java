@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +15,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import br.com.ekan.gestao_beneficiario.documento.domain.Documeto;
+import br.com.ekan.gestao_beneficiario.beneficiario.application.api.BeneficiarioRequest;
+import br.com.ekan.gestao_beneficiario.documento.domain.Documento;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,9 +36,17 @@ public class Beneficiario {
 	@NotNull
 	private LocalDate dataNascimento;
 	@NotEmpty
-	@OneToMany
-	private List<Documeto> documentos;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Documento> documentos;
 	
 	private LocalDate dataInclusao;
 	private LocalDate dataAtualizacao;
+	
+	public Beneficiario(BeneficiarioRequest beneficiarioRequest) {
+		this.nomeCompleto = beneficiarioRequest.getNomeCompleto();
+		this.telefone = beneficiarioRequest.getTelefone();
+		this.dataNascimento = beneficiarioRequest.getDataNascimento();
+		this.documentos = beneficiarioRequest.getDocumentos();
+		this.dataInclusao = LocalDate.now();
+	}
 }

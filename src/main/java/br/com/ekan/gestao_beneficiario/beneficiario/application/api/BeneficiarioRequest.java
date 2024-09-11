@@ -3,12 +3,11 @@ package br.com.ekan.gestao_beneficiario.beneficiario.application.api;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import br.com.ekan.gestao_beneficiario.documento.application.api.DocumetoRequest;
+import br.com.ekan.gestao_beneficiario.documento.domain.Documento;
 import lombok.Value;
 
 @Value
@@ -20,6 +19,5 @@ public class BeneficiarioRequest {
 	@NotNull
 	private LocalDate dataNascimento;
 	@NotEmpty
-	@OneToMany
-	private List<DocumetoRequest> documentos;
+	private List<Documento> documentos;
 }

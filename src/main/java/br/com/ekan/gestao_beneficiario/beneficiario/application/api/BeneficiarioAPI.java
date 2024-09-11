@@ -2,6 +2,7 @@ package br.com.ekan.gestao_beneficiario.beneficiario.application.api;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,5 +12,5 @@ import org.springframework.web.bind.annotation.RestController;
 public interface BeneficiarioAPI {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	BeneficiarioResponse postBeneficiario(BeneficiarioRequest beneficiarioRequest);
+	BeneficiarioResponse postBeneficiario(@RequestBody BeneficiarioRequest beneficiarioRequest);
 }
