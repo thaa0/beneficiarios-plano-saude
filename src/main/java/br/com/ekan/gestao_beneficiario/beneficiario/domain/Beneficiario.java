@@ -36,7 +36,7 @@ public class Beneficiario {
 	@NotNull
 	private LocalDate dataNascimento;
 	@NotEmpty
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "beneficiario")
 	private List<Documento> documentos;
 	
 	private LocalDate dataInclusao;
@@ -46,7 +46,13 @@ public class Beneficiario {
 		this.nomeCompleto = beneficiarioRequest.getNomeCompleto();
 		this.telefone = beneficiarioRequest.getTelefone();
 		this.dataNascimento = beneficiarioRequest.getDataNascimento();
-		this.documentos = beneficiarioRequest.getDocumentos();
 		this.dataInclusao = LocalDate.now();
+		if(beneficiarioRequest.getDocumentos()!=null) {
+			this.documentos = beneficiarioRequest.getDocumentos();
+			for (Documento documento:this.documentos) {
+				documento.setBeneficiario(this);
+				documento.setDataInclusao(LocalDate.now());
+			}
+		}
 	}
 }
