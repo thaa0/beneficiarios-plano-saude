@@ -3,8 +3,11 @@ package br.com.ekan.gestao_beneficiario.beneficiario.application.service;
 import java.util.List;
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Service;
 
+import br.com.ekan.gestao_beneficiario.beneficiario.application.api.BeneficiarioAlteraRequest;
 import br.com.ekan.gestao_beneficiario.beneficiario.application.api.BeneficiarioListResponse;
 import br.com.ekan.gestao_beneficiario.beneficiario.application.api.BeneficiarioRequest;
 import br.com.ekan.gestao_beneficiario.beneficiario.application.api.BeneficiarioResponse;
@@ -45,8 +48,24 @@ public class BeneficiarioApplicationService implements BeneficiarioService {
 		log.info("[start] BeneficiarioApplicationService - cadastraBeneficiario");
 		Beneficiario beneficiario = beneficiarioRepository.buscaBeneficiarioPeloId(idBeneficiario);
 		List<Documento> documentos = beneficiario.getDocumentos();		
-		log.info("[finish] BeneficiarioApplicationService - {}", documentos);
 		log.info("[finish] BeneficiarioApplicationService - cadastraBeneficiario");
 		return DocumentoListResponse.converte(documentos);
+	}
+
+	@Override
+	public void atualizaBeneficiario(@Valid BeneficiarioAlteraRequest beneficiarioAlteraRequest, UUID idBeneficiario) {
+		log.info("[start] BeneficiarioApplicationService - cadastraBeneficiario");
+		Beneficiario beneficiario = beneficiarioRepository.buscaBeneficiarioPeloId(idBeneficiario);
+		beneficiario.altera(beneficiarioAlteraRequest);
+		beneficiarioRepository.salva(beneficiario);
+		log.info("[finish] BeneficiarioApplicationService - cadastraBeneficiario");	
+	}
+
+	@Override
+	public void deletaBeneficiario(UUID idBeneficiario) {
+		log.info("[start] BeneficiarioApplicationService - deletaBeneficiario");
+		beneficiarioRepository.buscaBeneficiarioPeloId(idBeneficiario);		
+		beneficiarioRepository.deleta(idBeneficiario);
+		log.info("[finish] BeneficiarioApplicationService - deletaBeneficiario");		
 	}
 }

@@ -3,6 +3,8 @@ package br.com.ekan.gestao_beneficiario.beneficiario.application.api;
 import java.util.List;
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ekan.gestao_beneficiario.beneficiario.application.service.BeneficiarioService;
@@ -35,9 +37,23 @@ public class BeneficiarioController implements BeneficiarioAPI {
 
 	@Override
 	public List<DocumentoListResponse> getDocumentosBeneficiario(UUID idBeneficiario) {
-		log.info("[start] BeneficiarioController - getBeneficiarios");
+		log.info("[start] BeneficiarioController - getDocumentosBeneficiario");
 		List<DocumentoListResponse> beneficiarios = beneficiarioService.buscaDocumentos(idBeneficiario);
-		log.info("[finish] BeneficiarioController - getBeneficiarios");
+		log.info("[finish] BeneficiarioController - getDocumentosBeneficiario");
 		return beneficiarios;
+	}
+
+	@Override
+	public void patchBeneficiario(@Valid BeneficiarioAlteraRequest beneficiarioAlteraRequest, UUID idBeneficiario) {
+		log.info("[start] BeneficiarioController - getBeneficiarios");
+		beneficiarioService.atualizaBeneficiario(beneficiarioAlteraRequest, idBeneficiario);
+		log.info("[finish] BeneficiarioController - getBeneficiarios");	
+	}
+
+	@Override
+	public void deletaBeneficiario(UUID idBeneficiario) {
+		log.info("[start] BeneficiarioController - deletaBeneficiario");
+		beneficiarioService.deletaBeneficiario(idBeneficiario);
+		log.info("[finish] BeneficiarioController - deletaBeneficiario");		
 	}
 }

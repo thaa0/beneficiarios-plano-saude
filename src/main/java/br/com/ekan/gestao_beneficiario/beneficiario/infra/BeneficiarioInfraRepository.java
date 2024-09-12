@@ -41,4 +41,11 @@ public class BeneficiarioInfraRepository implements BeneficiarioRepository {
 				.orElseThrow(()-> APIException.build(HttpStatus.NOT_FOUND, "Beneficiário não encontrado"));
 		return beneficiario;
 	}
+
+	@Override
+	public void deleta(UUID idBeneficiario) {
+		log.info("[start] BeneficiarioInfraRepository - deleta");
+		beneficiarioSpringDataJPARepository.deleteById(idBeneficiario);
+		log.info("[finish] BeneficiarioInfraRepository - deleta");		
+	}
 }

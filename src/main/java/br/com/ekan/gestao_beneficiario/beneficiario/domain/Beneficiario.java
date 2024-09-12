@@ -11,10 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import br.com.ekan.gestao_beneficiario.beneficiario.application.api.BeneficiarioAlteraRequest;
 import br.com.ekan.gestao_beneficiario.beneficiario.application.api.BeneficiarioRequest;
 import br.com.ekan.gestao_beneficiario.documento.domain.Documento;
 import lombok.AccessLevel;
@@ -36,7 +38,7 @@ public class Beneficiario {
 	@NotNull
 	private LocalDate dataNascimento;
 	@NotEmpty
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "beneficiario")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "beneficiario")
 	private List<Documento> documentos;
 	
 	private LocalDate dataInclusao;
@@ -52,6 +54,23 @@ public class Beneficiario {
 			for (Documento documento:this.documentos) {
 				documento.setBeneficiario(this);
 				documento.setDataInclusao(LocalDate.now());
+			}
+		}
+	}
+
+	public void altera(@Valid BeneficiarioAlteraRequest beneficiarioAlteraRequest) {
+		this.nomeCompleto = beneficiarioAlteraRequest.getNomeCompleto();
+		this.telefone = beneficiarioAlteraRequest.getTelefone();
+		this.dataNascimento = beneficiarioAlteraRequest.getDataNascimento();
+		this.ultimaAtualizacao = beneficiarioAlteraRequest.getDataAlteracao();
+		if(beneficiarioAlteraRequest.getDocumentos()!=null) {
+			this.documentos.clear();
+			this.documentos = beneficiarioAlteraRequest.getDocumentos();
+			for (Documento documento:this.documentos) {
+				if(this.idBeneficiario==null) {
+					documento.setBeneficiario(this);
+				} 
+				documento.setDataAtualizacao(LocalDate.now());
 			}
 		}
 	}
