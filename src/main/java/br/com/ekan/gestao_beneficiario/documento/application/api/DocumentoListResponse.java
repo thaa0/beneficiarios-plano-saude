@@ -2,6 +2,7 @@ package br.com.ekan.gestao_beneficiario.documento.application.api;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import br.com.ekan.gestao_beneficiario.documento.domain.Documento;
@@ -9,6 +10,7 @@ import lombok.Value;
 
 @Value
 public class DocumentoListResponse {
+	private UUID idDocumento;	
 	private String tipoDocumento;	
 	private String descricao;	
 	private LocalDate dataInclusao;
@@ -22,6 +24,7 @@ public class DocumentoListResponse {
 	}
 
 	public DocumentoListResponse(Documento documento) {
+		this.idDocumento = documento.getIdDocumento();
 		this.tipoDocumento = documento.getTipoDocumento();
         this.descricao = documento.getDescricao();
         this.dataInclusao = documento.getDataInclusao();

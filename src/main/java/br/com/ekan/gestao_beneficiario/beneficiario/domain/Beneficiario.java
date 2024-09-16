@@ -2,6 +2,7 @@ package br.com.ekan.gestao_beneficiario.beneficiario.domain;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
@@ -59,19 +60,50 @@ public class Beneficiario {
 	}
 
 	public void altera(@Valid BeneficiarioAlteraRequest beneficiarioAlteraRequest) {
-		this.nomeCompleto = beneficiarioAlteraRequest.getNomeCompleto();
-		this.telefone = beneficiarioAlteraRequest.getTelefone();
-		this.dataNascimento = beneficiarioAlteraRequest.getDataNascimento();
-		this.ultimaAtualizacao = beneficiarioAlteraRequest.getDataAlteracao();
-		if(beneficiarioAlteraRequest.getDocumentos()!=null) {
-			this.documentos.clear();
-			this.documentos = beneficiarioAlteraRequest.getDocumentos();
-			for (Documento documento:this.documentos) {
-				if(this.idBeneficiario==null) {
-					documento.setBeneficiario(this);
-				} 
-				documento.setDataAtualizacao(LocalDate.now());
-			}
-		}
+	    atualizarInformacoesBasicas(beneficiarioAlteraRequest);
+	    
+	    if (Objects.nonNull(beneficiarioAlteraRequest.getDocumentos())) {
+	        atualizarDocumentos(beneficiarioAlteraRequest.getDocumentos());
+	    }
+	}
+
+	private void atualizarInformacoesBasicas(BeneficiarioAlteraRequest beneficiarioAlteraRequest) {
+	    this.nomeCompleto = beneficiarioAlteraRequest.getNomeCompleto();
+	    this.telefone = beneficiarioAlteraRequest.getTelefone();
+	    this.dataNascimento = beneficiarioAlteraRequest.getDataNascimento();
+	    this.ultimaAtualizacao = LocalDate.now();
+	}
+
+	private void atualizarDocumentos(List<Documento> novosDocumentos) {
+	    novosDocumentos.forEach(this::processarDocumento);
+	}
+
+	private void processarDocumento(Documento documentoNovo) {
+	    Documento documentoExistente = buscarDocumentoExistente(documentoNovo.getIdDocumento());
+
+	    if (Objects.nonNull(documentoExistente)) {
+	        atualizarDocumento(documentoExistente, documentoNovo);
+	    } else {
+	        adicionarNovoDocumento(documentoNovo);
+	    }
+	}
+
+	private Documento buscarDocumentoExistente(UUID documentoId) {
+	    return this.documentos.stream()
+	        .filter(doc -> Objects.equals(doc.getIdDocumento(), documentoId))
+	        .findFirst()
+	        .orElse(null);
+	}
+
+	private void atualizarDocumento(Documento documentoExistente, Documento documentoNovo) {
+		documentoExistente.setTipoDocumento(documentoNovo.getTipoDocumento());
+		documentoExistente.setDescricao(documentoNovo.getDescricao());  // Exemplo: atualiza dados do documento 
+	    documentoExistente.setDataAtualizacao(LocalDate.now());
+	}
+
+	private void adicionarNovoDocumento(Documento documentoNovo) {
+	    documentoNovo.setBeneficiario(this);
+	    documentoNovo.setDataInclusao(LocalDate.now());
+	    this.documentos.add(documentoNovo);
 	}
 }
