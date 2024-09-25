@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -22,6 +23,7 @@ import br.com.ekan.gestao_beneficiario.documento.application.api.DocumentoListRe
 @RequestMapping("/v1/beneficiario")
 public interface BeneficiarioAPI {
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	@ResponseStatus(HttpStatus.CREATED)
 	BeneficiarioResponse postBeneficiario(@RequestBody BeneficiarioRequest beneficiarioRequest);
 	
